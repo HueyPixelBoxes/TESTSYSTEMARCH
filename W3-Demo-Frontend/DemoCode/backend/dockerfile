@@ -1,0 +1,6 @@
+FROM alpine/java:21.0.2-jdk
+ENV DB_HOST=mongo
+ENV CORS_ALLOWED_ORIGIN=http://localhost:3000
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

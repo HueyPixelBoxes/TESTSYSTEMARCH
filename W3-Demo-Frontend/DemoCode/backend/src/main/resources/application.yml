@@ -1,0 +1,47 @@
+
+# Postgres Database Connection Configuration
+spring:
+  # datasource:
+  #   url: jdbc:postgresql://localhost:5432/postgres
+  #   username: postgres
+  #   password: postgres
+  #   driver-class-name: org.postgresql.Driver
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: update
+      
+  #   properties:
+  #     hibernate:
+  #       dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # data:
+  #   mongodb:
+  #     # uri: "mongodb://${DB_CONN:tri:tri@localhost:27017}/customer?authSource=admin"
+  #     uri: ${DB_CONN}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  # MySQL Connection Configuration
+
+  # datasource:
+  #   url: jdbc:mysql://localhost:3307/databaseOrSchemaName
+  #   username: your_db_root_username
+  #   password: your_db_root_password
+  #   driver-class-name: com.mysql.cj.jdbc.Driver
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: update
+      
+  #   properties:
+  #     hibernate:
+  #       dialect: org.hibernate.dialect.MySQL8Dialect
+
+  application:
+    name: jpa_demo
+
+server:
+  port: 8081
+
+  
