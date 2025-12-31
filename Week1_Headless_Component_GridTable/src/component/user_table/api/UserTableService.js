@@ -1,19 +1,21 @@
 
 
-const loadUserData = () => {
-    const users = [
-        { name: 'John Doe', age: 28, email: 'john@example.com' },
-        { name: 'Jane Smith', age: 34, email: 'jane@example.com' },
-        { name: 'Sam Johnson', age: 22, email: 'sam@example.com' },
-        { name: 'Alice Brown', age: 29, email: 'alice@example.com' },
-        { name: 'Bob White', age: 31, email: 'bob@example.com' },
-        { name: 'Charlie Black', age: 27, email: 'charlie@example.com' },
-        { name: 'Diana Green', age: 26, email: 'diana@example.com' },
-        { name: 'Eve Blue', age: 33, email: 'eve@example.com' },
-        { name: 'Frank Red', age: 30, email: 'frank@example.com' },
-    ];
+const DEFAULT_ENDPOINT = (process.env.REACT_APP_API_BASE_URL || '').replace(/\/+$/, '') + '/users';
 
-    return users;
+async function loadUserData(options = {}) {
+    const endpoint = options.endpoint || DEFAULT_ENDPOINT || '/api/users';
+
+    try {
+        const response = await fetch(endpoint, { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        return Array.isArray(data) ? data : (data.users || []);
+    } catch (err) {
+        console.error('UserTableService.loadUserData error:', err);
+        throw err;
+    }
 }
 
-export default loadUserData
+export default loadUserData;

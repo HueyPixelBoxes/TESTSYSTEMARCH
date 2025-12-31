@@ -1,23 +1,47 @@
-import UserCard from '../user_table/child_component/UserCard';
-import loadUserData from '../user_table/api/UserTableService';
+import React, { useEffect, useState } from 'react';
 
-const GridTable = ({CardComponent, itemLoadApi}) => {
+const GridTable = ({ CardComponent, itemLoadApi }) => {
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const items = itemLoadApi();
-    
+    useEffect(() => {
+        let mounted = true;
+
+        async function load() {
+            setLoading(true);
+            setError(null);
+            try {
+                const result = await itemLoadApi();
+                if (mounted) setItems(result || []);
+            } catch (err) {
+                if (mounted) setError(err);
+            } finally {
+                if (mounted) setLoading(false);
+            }
+        }
+
+        load();
+
+        return () => {
+            mounted = false;
+        };
+    }, [itemLoadApi]);
+
+    if (loading) return <div className="p-4">Loading...</div>;
+    if (error) return <div className="p-4 text-red-600">Error loading items</div>;
+
     return (
         <div className="
             grid
-            sm:grid-cols-1 md:grid-cols-2 
+            sm:grid-cols-1 md:grid-cols-2
                 lg:grid-cols-3 xl:grid-cols-4
             mx-auto p-4
-            gap-4 
+            gap-4
         ">
-            
             {items.map((item, index) => (
                 <CardComponent item={item} key={index} />
             ))}
-
         </div>
     );
 };
